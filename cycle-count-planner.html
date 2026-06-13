@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cycle Count Planning Template | Process Foundry</title>
+<meta name="description" content="Schedule, execute, and close inventory cycle counts in Excel. ABC-driven frequency, automated variance calculation, printable count sheets, and a live dashboard — built for warehouse teams without a WMS."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+--navy: #0D1F3D;
+--navy-mid: #152845;
+--navy-light: #1A3260;
+--blue: #194178;
+--accent: #52A2DC;
+--accent-bright: #6DB8F0;
+--accent-dim: #2A6A9E;
+--white: #FFFFFF;
+--off-white: #EAF2FA;
+--gray: #8899AA;
+--light-gray: #D6E4F0;
+--body-font: 'Barlow', sans-serif;
+--display-font: 'Barlow Condensed', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--body-font); background: var(--navy); color: var(--white); overflow-x: hidden; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 68px;
+  background: rgba(13,31,61,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(82,162,220,0.15);
+}
+.nav-logo { font-family: var(--display-font); font-size: 20px; font-weight: 700; letter-spacing: 0.04em; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--light-gray); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-cta { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); background: var(--accent); padding: 10px 22px; border-radius: 3px; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--accent-bright); }
+
+section { padding: 100px 48px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.section-label::before { content: ''; display: block; width: 24px; height: 2px; background: var(--accent); }
+h2 { font-family: var(--display-font); font-size: clamp(32px, 4vw, 48px); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: -0.01em; margin-bottom: 16px; }
+h2 em { font-style: normal; color: var(--accent); }
+.section-divider { width: 48px; height: 3px; background: var(--accent); margin-bottom: 48px; }
+.btn-primary { font-family: var(--body-font); font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); background: var(--accent); padding: 14px 32px; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block; }
+.btn-primary:hover { background: var(--accent-bright); transform: translateY(-2px); }
+.btn-secondary { font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: transparent; padding: 14px 32px; border-radius: 3px; border: 1px solid rgba(82,162,220,0.4); text-decoration: none; transition: border-color 0.2s, transform 0.15s; display: inline-block; }
+.btn-secondary:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+/* HERO */
+#hero { min-height: 80vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 140px 48px 80px; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(82,162,220,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(82,162,220,0.06) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+.hero-glow { position: absolute; top: -20%; right: -5%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(82,162,220,0.1) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 380px; gap: 80px; align-items: center; position: relative; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+.hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--accent); }
+h1 { font-family: var(--display-font); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; margin-bottom: 24px; }
+h1 em { font-style: normal; color: var(--accent); }
+.hero-sub { font-size: 17px; font-weight: 300; line-height: 1.7; color: var(--light-gray); max-width: 480px; margin-bottom: 36px; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.hero-meta { font-size: 12px; color: var(--gray); }
+
+/* ABC card */
+.abc-card { background: rgba(25,50,96,0.5); border: 1px solid rgba(82,162,220,0.2); border-top: 3px solid var(--accent); padding: 32px 28px; border-radius: 0 0 6px 6px; }
+.abc-card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+.abc-item { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(82,162,220,0.1); }
+.abc-item:last-child { border-bottom: none; }
+.abc-badge { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--display-font); font-size: 18px; font-weight: 800; flex-shrink: 0; }
+.abc-info { flex: 1; }
+.abc-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.abc-freq { font-size: 12px; color: var(--gray); }
+.abc-pct { font-size: 11px; font-weight: 600; text-align: right; line-height: 1.4; }
+
+/* workflow */
+.workflow-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 40px; position: relative; }
+.workflow-steps::before { content: ''; position: absolute; top: 35px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, var(--accent), rgba(82,162,220,0.3), var(--accent)); }
+.step { text-align: center; padding: 0 8px; position: relative; }
+.step-num { width: 70px; height: 70px; border-radius: 50%; background: var(--navy); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--display-font); font-size: 22px; font-weight: 800; color: var(--accent); margin: 0 auto 18px; position: relative; z-index: 1; }
+.step-title { font-family: var(--display-font); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.step-desc { font-size: 12px; font-weight: 300; color: var(--gray); line-height: 1.6; }
+
+/* tabs grid */
+.tabs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+.tab-card { background: rgba(25,50,96,0.4); border: 1px solid rgba(82,162,220,0.12); border-top: 3px solid var(--accent); padding: 24px 20px; border-radius: 0 0 4px 4px; }
+.tab-card h3 { font-family: var(--display-font); font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+.tab-card p { font-size: 13px; font-weight: 300; color: var(--gray); line-height: 1.6; }
+
+/* features */
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 40px; }
+.feature-item { display: flex; gap: 14px; align-items: flex-start; background: rgba(25,50,96,0.4); border: 1px solid rgba(82,162,220,0.12); padding: 18px; border-radius: 4px; }
+.feature-item::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 2px; font-weight: 700; }
+.feature-text strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.feature-text p { font-size: 13px; font-weight: 300; color: var(--gray); line-height: 1.5; }
+
+/* pricing */
+.pricing-wrap { max-width: 520px; margin: 0 auto; }
+.pricing-card { background: rgba(25,50,96,0.4); border: 1px solid rgba(82,162,220,0.2); border-top: 3px solid var(--accent); padding: 48px 40px; border-radius: 0 0 6px 6px; text-align: center; }
+.pricing-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.pricing-price { font-family: var(--display-font); font-size: 64px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
+.pricing-sub { font-size: 13px; font-weight: 300; color: var(--gray); margin-bottom: 36px; }
+.pricing-features { text-align: left; margin-bottom: 36px; }
+.pricing-feature { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 400; color: var(--light-gray); padding: 9px 0; border-bottom: 1px solid rgba(82,162,220,0.1); }
+.pricing-feature:last-child { border-bottom: none; }
+.pricing-feature::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+.pricing-note { font-size: 13px; color: var(--gray); margin-top: 10px; }
+.pricing-note a { color: var(--accent); text-decoration: none; }
+
+.about-box { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: start; background: rgba(25,50,96,0.4); border: 1px solid rgba(82,162,220,0.15); border-left: 3px solid var(--accent); padding: 36px; border-radius: 0 4px 4px 0; margin-top: 40px; }
+.about-icon { font-size: 36px; }
+.about-box h3 { font-family: var(--display-font); font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 10px; }
+.about-box p { font-size: 15px; font-weight: 300; color: var(--light-gray); line-height: 1.75; }
+
+footer { padding: 32px 48px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(82,162,220,0.1); display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: var(--display-font); font-size: 16px; font-weight: 700; letter-spacing: 0.04em; color: var(--white); }
+.footer-logo span { color: var(--accent); }
+.footer-copy { font-size: 12px; color: var(--gray); }
+
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  section { padding: 72px 24px; }
+  #hero { padding: 120px 24px 60px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .workflow-steps { grid-template-columns: 1fr; gap: 32px; }
+  .workflow-steps::before { display: none; }
+  .tabs-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .about-box { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Process<span>Foundry</span>Tech</a>
+  <ul class="nav-links">
+    <li><a href="/#products">Software</a></li>
+    <li><a href="/#consulting">Consulting</a></li>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+  <a href="/#contact" class="nav-cta">Work With Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Excel Template · Instant Download</div>
+      <h1>Cycle<br>Count<br><em>Planner</em></h1>
+      <p class="hero-sub">Schedule, execute, and close inventory cycle counts without the spreadsheet chaos. ABC-driven frequency, automated variance calculation, and printable count sheets — ready to use today.</p>
+      <div class="hero-actions">
+        <a href="https://www.etsy.com/shop/ProcessFoundry" class="btn-primary" target="_blank" rel="noopener">Buy on Etsy — $19.99</a>
+        <a href="https://processfoundry.gumroad.com" class="btn-secondary" target="_blank" rel="noopener">Buy on Gumroad</a>
+      </div>
+      <p class="hero-meta">One-time purchase &nbsp;·&nbsp; Works in Excel 2016+ &nbsp;·&nbsp; No macros required</p>
+    </div>
+    <div class="abc-card">
+      <div class="abc-card-label">ABC Count Frequency</div>
+      <div class="abc-item">
+        <div class="abc-badge" style="background:rgba(41,128,185,0.25);color:#2980B9;">A</div>
+        <div class="abc-info">
+          <div class="abc-name">A Items — High Value</div>
+          <div class="abc-freq">Monthly (12x per year)</div>
+        </div>
+        <div class="abc-pct" style="color:#52A2DC;">20% of SKUs<br>80% of value</div>
+      </div>
+      <div class="abc-item">
+        <div class="abc-badge" style="background:rgba(82,162,220,0.2);color:#52A2DC;">B</div>
+        <div class="abc-info">
+          <div class="abc-name">B Items — Mid-Tier</div>
+          <div class="abc-freq">Quarterly (4x per year)</div>
+        </div>
+        <div class="abc-pct" style="color:#52A2DC;">30% of SKUs<br>15% of value</div>
+      </div>
+      <div class="abc-item">
+        <div class="abc-badge" style="background:rgba(136,153,170,0.2);color:#8899AA;">C</div>
+        <div class="abc-info">
+          <div class="abc-name">C Items — Low Value</div>
+          <div class="abc-freq">Annually (1x per year)</div>
+        </div>
+        <div class="abc-pct" style="color:#8899AA;">50% of SKUs<br>5% of value</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section style="background:var(--navy-mid); border-top:1px solid rgba(82,162,220,0.1); border-bottom:1px solid rgba(82,162,220,0.1);">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2>Five Steps from <em>Setup to Adjustment</em></h2>
+    <div class="section-divider"></div>
+    <div class="workflow-steps">
+      <div class="step"><div class="step-num">01</div><div class="step-title">Load Items</div><div class="step-desc">Enter items in the Item Master with location, ABC class, and unit cost</div></div>
+      <div class="step"><div class="step-num">02</div><div class="step-title">Build Schedule</div><div class="step-desc">Frequency auto-assigns by ABC class. Add counters and planned dates</div></div>
+      <div class="step"><div class="step-num">03</div><div class="step-title">Print Sheets</div><div class="step-desc">Printable count sheets with system qty hidden from counters before printing</div></div>
+      <div class="step"><div class="step-num">04</div><div class="step-title">Record Counts</div><div class="step-desc">Enter counted quantities. Variance and recount flags calculate automatically</div></div>
+      <div class="step"><div class="step-num">05</div><div class="step-title">Review &amp; Adjust</div><div class="step-desc">Investigate variances in the Variance Report before adjusting ERP</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS INSIDE -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">What's Inside</div>
+    <h2>Six Tabs, <em>One Complete Workflow</em></h2>
+    <div class="section-divider"></div>
+    <div class="tabs-grid">
+      <div class="tab-card"><h3>Instructions</h3><p>Step-by-step guide for setup, counting, and variance investigation. ABC classification reference included.</p></div>
+      <div class="tab-card"><h3>Item Master</h3><p>Enter all active SKUs with location, UOM, ABC class, cost, and usage. Count frequency assigns automatically.</p></div>
+      <div class="tab-card"><h3>Count Schedule</h3><p>Assign counters and planned dates. Track status from Scheduled through Complete. Sort by date or location.</p></div>
+      <div class="tab-card"><h3>Count Sheets</h3><p>Printable sheets for counters. System quantity is in a separate column — cover or hide before printing.</p></div>
+      <div class="tab-card"><h3>Variance Report</h3><p>All variances summarized with dollar impact. Document root cause before making ERP adjustments.</p></div>
+      <div class="tab-card"><h3>Dashboard</h3><p>Live metrics: completion rate, items pending, items with variance, and total variance dollar value.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section style="background:var(--navy-mid); border-top:1px solid rgba(82,162,220,0.1); border-bottom:1px solid rgba(82,162,220,0.1);">
+  <div class="section-inner">
+    <div class="section-label">Key Features</div>
+    <h2>Built for <em>Real Warehouse Teams</em></h2>
+    <div class="section-divider"></div>
+    <div class="features-grid">
+      <div class="feature-item"><div class="feature-text"><strong>ABC-Driven Scheduling</strong><p>Enter ABC class once — count frequency assigns automatically: Monthly, Quarterly, or Annual.</p></div></div>
+      <div class="feature-item"><div class="feature-text"><strong>Auto Variance Calculation</strong><p>Enter counted quantity and variance, variance %, and recount flags appear instantly — no formulas to write.</p></div></div>
+      <div class="feature-item"><div class="feature-text"><strong>Recount Flag at 2% Threshold</strong><p>Items with &gt;2% variance are automatically flagged "RECOUNT" so nothing slips through.</p></div></div>
+      <div class="feature-item"><div class="feature-text"><strong>Dollar Value of Variance</strong><p>Variance Report shows dollar impact (variance × unit cost) so you can prioritize investigations.</p></div></div>
+      <div class="feature-item"><div class="feature-text"><strong>System Qty Hidden on Print</strong><p>Count Sheets warn you to hide the system quantity column before printing — counters count blind for accuracy.</p></div></div>
+      <div class="feature-item"><div class="feature-text"><strong>Supports 50+ SKUs</strong><p>Item Master, Count Schedule, and Count Sheets are pre-built for 50 items. Extend as needed.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Pricing</div>
+    <h2>One-Time Purchase. <em>No Subscription.</em></h2>
+    <div class="section-divider"></div>
+    <div class="pricing-wrap">
+      <div class="pricing-card">
+        <div class="pricing-tag">One-Time Purchase · Instant Download</div>
+        <div class="pricing-price">$19.99</div>
+        <div class="pricing-sub">Yours forever · No renewal · No subscription</div>
+        <div class="pricing-features">
+          <div class="pricing-feature">6-tab Excel workbook, fully unlocked</div>
+          <div class="pricing-feature">Item Master with ABC classification</div>
+          <div class="pricing-feature">Auto count frequency assignment</div>
+          <div class="pricing-feature">Printable count sheets (system qty hideable)</div>
+          <div class="pricing-feature">Auto variance calculation + recount flag</div>
+          <div class="pricing-feature">Variance Report with root cause notes</div>
+          <div class="pricing-feature">Dashboard: completion rate, variance metrics</div>
+          <div class="pricing-feature">Works in Excel 2016, 2019, 2021, Microsoft 365</div>
+        </div>
+        <a href="https://www.etsy.com/shop/ProcessFoundry" class="btn-primary" target="_blank" rel="noopener" style="width:100%;text-align:center;display:block;">Download on Etsy — $19.99</a>
+        <p class="pricing-note">Also available on <a href="https://processfoundry.gumroad.com" target="_blank" rel="noopener">Gumroad →</a></p>
+        <p class="pricing-note" style="margin-top:6px;">Need help implementing a cycle count program? <a href="/#contact">Talk to a consultant →</a></p>
+      </div>
+    </div>
+    <div class="about-box">
+      <div class="about-icon">🏭</div>
+      <div>
+        <h3>Built by an Operator Who's Run Cycle Counts</h3>
+        <p>This template was designed by an independent ERP and supply chain consultant with 12+ years inside manufacturing and distribution operations. The workflow mirrors what actually happens on a warehouse floor — not a textbook exercise. If you need help building out a formal inventory accuracy program, Process Foundry offers consulting engagements for exactly that.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Process<span>Foundry</span>Tech</div>
+  <div class="footer-copy">© 2026 ProcessFoundryTech.com · Software &amp; ERP Consulting</div>
+</footer>
+
+</body>
+</html>
